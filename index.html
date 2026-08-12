@@ -2786,6 +2786,14 @@ window.closeImportPicker=function(){
   document.getElementById('import-picker-modal').style.display='none';
 };
 
+function _normUnitCode(v){
+  v=(v||'').toString().trim().toLowerCase();
+  if(v==='both'||v==='piece'||v==='case')return v;
+  if(v==='piece only')return 'piece';
+  if(v==='box only')return 'case';
+  if(v==='piece & box'||v==='')return 'both';
+  return 'both';
+}
 window.importProductsExcel=function(input){
   var file=input.files[0];
   if(!file){return;}
@@ -2825,8 +2833,8 @@ window.importProductsExcel=function(input){
           cpDist:distBox||distPiece*ppcVal,
           visRetail:(r[12]||'Yes').toString().trim().toLowerCase()!=='no',
           visDist:(r[13]||'Yes').toString().trim().toLowerCase()!=='no',
-          unitsRetail:(r[14]||'Piece & Box').toString().trim(),
-          unitsDist:(r[15]||'Piece & Box').toString().trim(),
+          unitsRetail:_normUnitCode(r[14]),
+          unitsDist:_normUnitCode(r[15]),
           img:window._toEmbedURL((r[16]||'').toString().trim()),
           desc:'',
           variations:[]
